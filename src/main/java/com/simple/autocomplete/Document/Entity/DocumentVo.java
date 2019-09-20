@@ -31,7 +31,7 @@ public class DocumentVo extends BaseEntity {
 
 
 
-    private String getTitle() {
+    public String getTitle() {
         return title;
     }
 
@@ -39,7 +39,7 @@ public class DocumentVo extends BaseEntity {
         this.title = title;
     }
 
-    private String getContent() {
+    public String getContent() {
         return content;
     }
 
@@ -47,7 +47,7 @@ public class DocumentVo extends BaseEntity {
         this.content = content;
     }
 
-    private int getViewCount() {
+    public int getViewCount() {
         return viewCount;
     }
 
@@ -55,7 +55,7 @@ public class DocumentVo extends BaseEntity {
         this.viewCount = viewCount;
     }
 
-    private Date getRegDate() {
+    public Date getRegDate() {
         return regDate;
     }
 
