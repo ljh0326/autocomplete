@@ -23,7 +23,8 @@ public class DocumentController {
     }
 
     @GetMapping("/autocomplete")
-    public ResponseEntity<Set<String>> autocomplete(@RequestParam("searchWord")String searchWord){
+    public ResponseEntity<Set<String>> autocomplete(@RequestParam(value = "searchWord", required = false)String searchWord){
         return new ResponseEntity<>(documentService.autoComplete(searchWord), HttpStatus.OK);
     }
 }
+
