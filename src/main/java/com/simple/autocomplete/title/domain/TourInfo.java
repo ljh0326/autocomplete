@@ -1,11 +1,14 @@
-package vo;
+package com.simple.autocomplete.title.domain;
 
 
 import com.opencsv.bean.CsvBindByPosition;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-// 걷는길 명칭,코스명,지역1,난이도,상세거리(km),소요시간(시),소개
+/**
+ * 색인할 데이터 resources walk_way.csv 데이터와 매칭된다.
+ * 걷는길 명칭,코스명,지역1,난이도,상세거리(km),소요시간(시),소개
+ */
 public class TourInfo {
     // 걷는길 명칭
     @CsvBindByPosition(position = 0)
