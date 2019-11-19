@@ -12,6 +12,7 @@ import org.apache.lucene.search.*;
 import org.apache.lucene.store.MMapDirectory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -29,6 +30,7 @@ import java.util.Set;
  *
  * IndexSearcher에서 Search한 결과가 TopDoc 순회돌리면서 출력
  */
+@Component
 public class SearchService {
     //색인 정보가 저장된 경로
     private static final String indexPath = PropertyLoader.getInstance().getPropertyValue("INDEX_DIR_PATH");
