@@ -1,4 +1,4 @@
-package com.simple.autocomplete.Document.Entity;
+package com.simple.autocomplete.title.domain;
 
 import com.simple.autocomplete.model.BaseEntity;
 import org.hibernate.annotations.ColumnDefault;

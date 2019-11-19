@@ -1,6 +1,6 @@
-package com.simple.autocomplete.Document.Controller;
+package com.simple.autocomplete.title;
 
-import com.simple.autocomplete.Document.Service.DocumentService;
+import com.simple.autocomplete.title.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

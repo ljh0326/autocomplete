@@ -1,21 +1,24 @@
-package com.simple.autocomplete.Document.Service;
+package com.simple.autocomplete.title.service;
 
-import com.simple.autocomplete.Document.Entity.DocumentVo;
-import com.simple.autocomplete.Document.Repository.DocumentRepository;
-import com.simple.autocomplete.utils.ConvertEngToKor;
+import com.simple.autocomplete.title.domain.DocumentVo;
+import com.simple.autocomplete.title.persistance.DocumentRepository;
+import com.simple.autocomplete.utils.Eng2KorConverter;
 import com.simple.autocomplete.utils.Trie;
 import com.simple.autocomplete.utils.UnicodeKorean;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class DocumentService {
 
     private final UnicodeKorean deComposer;
-    private final ConvertEngToKor engToKor;
+    private final Eng2KorConverter engToKor;
     private final Trie trieSearcher = new Trie(true);
     private final DocumentRepository documentRepository;
 
@@ -37,7 +40,7 @@ public class DocumentService {
         }
     }
 
-    public DocumentService(UnicodeKorean deComposer, ConvertEngToKor engToKor, DocumentRepository documentRepository) {
+    public DocumentService(UnicodeKorean deComposer, Eng2KorConverter engToKor, DocumentRepository documentRepository) {
         this.deComposer = deComposer;
         this.engToKor = engToKor;
         this.documentRepository = documentRepository;
