@@ -39,6 +39,8 @@ public class TourInfoIndexService implements IndexService {
         try {
             Directory indexDirectory = MMapDirectory.open(Paths.get(indexPath));
             IndexWriterConfig config = new IndexWriterConfig(analyzer);
+            //Index가 없으면 CREATE 있으면 APPEND
+            config.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
             IndexWriter writer = new IndexWriter(indexDirectory, config);
             objectList.forEach(i -> addDocument(i, writer));
             writer.commit();
