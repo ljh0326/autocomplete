@@ -78,6 +78,9 @@
         <input id="autocomplete" type="text" name="autocomplete" placeholder="put in searchWord">
     </div>
     <input type="submit">
+    <div>
+        <p id="result"><strong>결과:</strong></p>
+    </div>
 </form>
 <script>
     function autocomplete(inp, arr){
@@ -196,7 +199,7 @@
             }
 
             httpRequest.onreadystatechange = alertContents;
-            httpRequest.open('GET', '/document/autocomplete?searchWord=' + document.getElementById("autocomplete").value);
+            httpRequest.open('GET', '/autocomplete?searchWord=' + document.getElementById("autocomplete").value);
             httpRequest.send();
         }
 
@@ -204,7 +207,16 @@
             try {
                 if (httpRequest.readyState === XMLHttpRequest.DONE) {
                     if (httpRequest.status === 200) {
-                        autocomplete(document.getElementById("autocomplete"), JSON.parse(httpRequest.responseText));
+                        // autocomplete 실행
+                        // autocomplete(document.getElementById("autocomplete"), JSON.parse(httpRequest.responseText));
+                        document.getElementById('result').innerText = '';
+                        console.log(JSON.parse(httpRequest.responseText));
+                        var result = JSON.parse(httpRequest.responseText);
+                        var length = result.length;
+
+                        for(var i = 0; i < length; i++){
+                            document.getElementById('result').innerText += result[i] + '\n';
+                        }
                     } else {
                         alert('There was a problem with the request.');
                     }
