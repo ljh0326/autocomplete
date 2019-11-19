@@ -1,10 +1,8 @@
-package com.simple.autocomplete.Document.Repository;
+package com.simple.autocomplete.title.persistance;
 
-import com.simple.autocomplete.Document.Entity.DocumentVo;
+import com.simple.autocomplete.title.domain.DocumentVo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public interface DocumentRepository extends JpaRepository<DocumentVo, Integer> {
