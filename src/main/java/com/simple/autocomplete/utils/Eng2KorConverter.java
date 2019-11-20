@@ -2,13 +2,23 @@ package com.simple.autocomplete.utils;
 
 import org.springframework.stereotype.Component;
 
+/**
+ *  @author LEE
+ *  @contact ljh0326s@gmail.com
+ *
+ * 영어로 입력된 값을 한국어로 바꾸는 클래스
+ * ex) dkssudgktpdy => 안녕하세요, r => ㄱ
+ */
 @Component
-public class ConvertEngToKor {
-    enum CodeType {
-        chosung, jungsung, jongsung
+public class Eng2KorConverter {
+    static enum CodeType {
+        /** 초성 */chosung,
+        /** 중성 */jungsung,
+        /** 종성 */jongsung
     }
 
     private static final String ignoreChars = "`1234567890-=[]\\;',./~!@#$%^&*()_+{}|:\"<>? ";
+    private static final String numberChars = "1234567890";
     private static final String[] arrChoSungEng = {"r", "R", "s", "e", "E", "f", "a", "q", "Q", "t", "T", "d", "w", "W", "c", "z", "x", "v", "g"};
     private static final String[] arrJungSungEng = {"k", "o", "i", "O", "j", "p", "u", "P", "h", "hk", "ho", "hl", "y", "n", "nj", "np", "nl", "b", "m", "ml", "l"};
     private static final String[] arrJongSungEng = {"r", "R", "rt", "s", "sw", "sg", "e", "f", "fr", "fa", "fq", "ft", "fx", "fv", "fg", "a", "q", "qt", "t", "T", "d", "w", "c", "z", "x", "v", "g"};
@@ -27,10 +37,26 @@ public class ConvertEngToKor {
                 continue;
             }
 
+            //숫자가 포함되면 결과에 붙인다.
+            if(numberChars.contains(eng.substring(i, i + 1))){
+                sb.append(eng.substring(i, i+1));
+                continue;
+            }
+
             //한국어면 그냥 그대로 문자열에 붙인다.
             if(isKorean(eng, i)){
                 sb.append(eng, i, i+1);
                 continue;
+            }
+
+            //입력된 값이 초성 하나라면 그냥 출력
+            //ex) e => ㄷ
+            if(eng.length() <= 1){
+                for (int j = 0; j < arrChoSungEng.length; j++) {
+                    if(arrChoSungEng[j].equals(eng)){
+                        return String.valueOf((char)(j + 0x3131));
+                    }
+                }
             }
 
             //초성코드 추출

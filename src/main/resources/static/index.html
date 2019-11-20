@@ -78,6 +78,9 @@
         <input id="autocomplete" type="text" name="autocomplete" placeholder="put in searchWord">
     </div>
     <input type="submit">
+    <div>
+        <p id="result"><strong>결과:</strong></p>
+    </div>
 </form>
 <script>
     function autocomplete(inp, arr){
@@ -99,7 +102,8 @@
             /*append the DIV element as a child of the autocomplete container:*/
             this.parentNode.appendChild(a);
             /*for each item in the array...*/
-            for (i = 0; i < arr.length; i++) {
+            let length = arr.length;
+            for (i = 0; i < length; i++) {
 
                 /*create a DIV element for each matching element:*/
                 b = document.createElement("DIV");
@@ -127,19 +131,19 @@
         inp.addEventListener("keydown", function(e) {
             let x = document.getElementById("autocomplete-list");
             if (x) x = x.getElementsByTagName("div");
-            if (e.keyCode == 40) {
+            if (e.keyCode === 40) {
                 /*If the arrow DOWN key is pressed,
                 increase the currentFocus letiable:*/
                 currentFocus++;
                 /*and and make the current item more visible:*/
                 addActive(x);
-            } else if (e.keyCode == 38) { //up
+            } else if (e.keyCode === 38) { //up
                 /*If the arrow UP key is pressed,
                 decrease the currentFocus letiable:*/
                 currentFocus--;
                 /*and and make the current item more visible:*/
                 addActive(x);
-            } else if (e.keyCode == 13) {
+            } else if (e.keyCode === 13) {
                 /*If the ENTER key is pressed, prevent the form from being submitted,*/
                 e.preventDefault();
                 if (currentFocus > -1) {
@@ -172,7 +176,7 @@
             except the one passed as an argument:*/
             let x = document.getElementsByClassName("autocomplete-items");
             for (let i = 0; i < x.length; i++) {
-                if (elmnt != x[i] && elmnt != inp) {
+                if (elmnt !== x[i] && elmnt !== inp) {
                     x[i].parentNode.removeChild(x[i]);
                 }
             }
@@ -184,7 +188,7 @@
     }
 
     (function() {
-        var httpRequest;
+        let httpRequest;
         document.getElementById("autocomplete").addEventListener('input', makeRequest);
 
         function makeRequest() {
@@ -196,7 +200,7 @@
             }
 
             httpRequest.onreadystatechange = alertContents;
-            httpRequest.open('GET', '/document/autocomplete?searchWord=' + document.getElementById("autocomplete").value);
+            httpRequest.open('GET', '/autocomplete?searchWord=' + document.getElementById("autocomplete").value);
             httpRequest.send();
         }
 
@@ -204,7 +208,15 @@
             try {
                 if (httpRequest.readyState === XMLHttpRequest.DONE) {
                     if (httpRequest.status === 200) {
-                        autocomplete(document.getElementById("autocomplete"), JSON.parse(httpRequest.responseText));
+                        // autocomplete 실행
+                        // autocomplete(document.getElementById("autocomplete"), JSON.parse(httpRequest.responseText));
+                        document.getElementById('result').innerText = '';
+                        let result = JSON.parse(httpRequest.responseText);
+                        let length = result.length;
+
+                        for(let i = 0; i < length; i++){
+                            document.getElementById('result').innerText += result[i] + '\n';
+                        }
                     } else {
                         alert('There was a problem with the request.');
                     }

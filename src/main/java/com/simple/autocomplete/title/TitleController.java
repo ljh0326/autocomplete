@@ -1,6 +1,6 @@
-package com.simple.autocomplete.Document.Controller;
+package com.simple.autocomplete.title;
 
-import com.simple.autocomplete.Document.Service.DocumentService;
+import com.simple.autocomplete.title.service.AutoCompleteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,19 +12,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Set;
 
 @Controller
-@RequestMapping("/document")
-public class DocumentController {
+@RequestMapping("/")
+public class TitleController {
 
-    private DocumentService documentService;
+    private AutoCompleteService autoCompleteService;
 
     @Autowired
-    public DocumentController(DocumentService documentService) {
-        this.documentService = documentService;
+    public TitleController(AutoCompleteService autoCompleteService) {
+        this.autoCompleteService = autoCompleteService;
     }
 
     @GetMapping("/autocomplete")
     public ResponseEntity<Set<String>> autocomplete(@RequestParam(value = "searchWord", required = false)String searchWord){
-        return new ResponseEntity<>(documentService.autoComplete(searchWord), HttpStatus.OK);
+        return new ResponseEntity<>(autoCompleteService.getSearchResult(searchWord), HttpStatus.OK);
     }
 }
 

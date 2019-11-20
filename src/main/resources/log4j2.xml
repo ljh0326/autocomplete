@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ @author LEE
+ @contact ljh0326s@gmail.com
+-->
+<Configuration>
+	<!-- (Appender: 로그가 출력되는 위치, Layout: 이벤트 포맷) 설정 xml-->
+	<Appenders>
+		<!-- 콘솔에 출력 -->
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" /><!-- 디폴트 패턴 적용, %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n -->
+		</Console>
+		<!-- 파일에 출력 -->
+		<File name="file" fileName="./logs/autocomplete.log" append="false">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" />
+		</File>
+	</Appenders>
+
+	<!-- Logger 설정 -->
+	<Loggers>
+		<Root level="INFO">
+			<!-- 이름이 console 인 Appender 참조-->
+			<AppenderRef ref="console"/>
+		</Root>
+	</Loggers>
+</Configuration>

@@ -6,6 +6,13 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *  @author LEE
+ *  @contact ljh0326s@gmail.com
+ *
+ * 한글 자모를 나누는 클래스
+ * ex) 안녕 => ㅇㅏㄴㄴㅕㅇ
+ */
 @Component
 public class UnicodeKorean {
 
@@ -32,7 +39,7 @@ public class UnicodeKorean {
     final private static Map<Character, String> korToEngMap = new HashMap<>();
     private String word;
 
-    //생성시 할글 키와 영어키를 매핑한다.
+    // 생성시 할글 키와 영어키를 매핑한다.
     public UnicodeKorean() {
         for (int i = 0; i < arrChoSung.length; i++) {
             korToEngMap.put(arrChoSung[i], arrChoSungEng[i]);
@@ -115,21 +122,29 @@ public class UnicodeKorean {
         return result;
     }
 
+    //반대로 결과를 가져오는 메서드
+    //ex) 안녕 => ㅇㅕㄴㄴㅏㅇ
     public String getReverseResult(){
         if (StringUtils.isEmpty(this.word)) return "";
         return getReverseResult(this.word);
     }
 
+    //결과를 반대로 반환하는 메서드
+    //ex) 안녕 => ㅇㅕㄴㄴㅏㅇ
     public String getReverseResult(String word){
         String result = getResult(word);
         return StringUtils.reverse(result);
     }
 
+    //영문으로 결과를 반환하는 메서드
+    //ex) 안녕 => dkssud
     public String getEngResult(){
         if (StringUtils.isEmpty(this.word)) return "";
         return getEngResult(this.word);
     }
 
+    //영문으로 결과를 반환하는 메서드
+    //ex) 안녕 => dkssud
     public String getEngResult(String word) {
         StringBuilder sb = new StringBuilder();
         String result = getResult(word);
@@ -144,11 +159,15 @@ public class UnicodeKorean {
         return sb.toString();
     }
 
+    //영문 결과를 반대로 반환하는 메서드
+    //ex) 안녕 => dusskd
     public String getEngReverseResult(){
         if (StringUtils.isEmpty(this.word)) return "";
         return getEngReverseResult(this.word);
     }
 
+    //영문 결과를 반대로 반환하는 메서드
+    //ex) 안녕 => dusskd
     public String getEngReverseResult(String word) {
         String result = getEngResult(word);
         return StringUtils.reverse(result);
