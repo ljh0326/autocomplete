@@ -58,7 +58,7 @@
         <dependency>
             <groupId>org.apache.solr</groupId>
             <artifactId>solr-core</artifactId>
-            <version>7.6.0</version>
+            <version>8.2.0</version>
         </dependency>
 
         <!-- read CSV 관련 라이브러리  -->
