@@ -214,8 +214,10 @@
                         let result = JSON.parse(httpRequest.responseText);
                         let length = result.length;
 
-                        for(let i = 0; i < length; i++){
-                            document.getElementById('result').innerText += result[i] + '\n';
+                        for(var i = 0; i < length; i++){
+                            document.getElementById('result').innerText +=
+                                '컨텐츠No: ' + result[i].contentsNo + ' |  Title: ' + result[i].autoKeyword +
+                                '  |   조회수: ' + result[i].hit + ' |   수정일' + result[i].regDate + '  |   스코어: ' + result[i].score + '\n';
                         }
                     } else {
                         alert('There was a problem with the request.');

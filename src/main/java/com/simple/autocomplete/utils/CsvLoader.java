@@ -2,7 +2,7 @@ package com.simple.autocomplete.utils;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import com.simple.autocomplete.title.domain.TourInfo;
+import com.simple.autocomplete.title.domain.TitleInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,7 +72,7 @@ public class CsvLoader {
     }
 
     public static void main(String[] args) {
-        List<TourInfo> titleInfoList = CsvLoader.loadCsvInfo();
+        List<TitleInfo> titleInfoList = CsvLoader.loadCsvInfo();
         titleInfoList.forEach(System.out::println);
     }
 }
