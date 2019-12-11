@@ -53,9 +53,4 @@ public class PropertyLoader {
     public String getPropertyValue(String key) {
         return propMap.get(key);
     }
-
-    public static void main(String[] args) {
-        PropertyLoader propertyLoader = PropertyLoader.getInstance();
-        System.out.println(propertyLoader.getPropertyValue("CSV_FILE_PATH"));
-    }
 }
