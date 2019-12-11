@@ -1,9 +1,9 @@
 package com.simple.autocomplete.lucene.service;
 
 import com.simple.autocomplete.lucene.analyzer.KORNgramAnalyzer;
-import com.simple.autocomplete.title.domain.TourInfo;
+import com.simple.autocomplete.title.domain.TitleInfo;
 import com.simple.autocomplete.utils.CsvLoader;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
@@ -24,14 +24,14 @@ import java.util.List;
 public class AnalyzerService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AnalyzerService.class);
 
-    public void analyzeText(List<TourInfo> objectList, Analyzer analyzer) {
+    public void analyzeText(List<TitleInfo> objectList, Analyzer analyzer) {
 
         StringBuffer stringBuffer = new StringBuffer();
         objectList.stream()
-                .filter(tourInfo -> StringUtils.isNotEmpty(tourInfo.getPathName()))
-                .forEach(tourInfo -> {
+                .filter(titleInfo -> StringUtils.isNotEmpty(titleInfo.getAutoKeyword()))
+                .forEach(titleInfo -> {
                     //분석기 기준으로 토큰 스트림이 생김
-                    try (TokenStream tokenStream = analyzer.tokenStream("description", tourInfo.getDescription())) {
+                    try (TokenStream tokenStream = analyzer.tokenStream("description", titleInfo.getAutoKeyword())) {
 
                         // Token String을 가져오기 위한 CharTermAttribute 설정
                         CharTermAttribute cta = tokenStream.addAttribute(CharTermAttribute.class);
@@ -54,7 +54,7 @@ public class AnalyzerService {
     public static void main(String[] args) {
 
         // CSV 파일에서 데이터를 읽는다.
-        List<TourInfo> titleInfoList = CsvLoader.loadCsvInfo();
+        List<TitleInfo> titleInfoList = CsvLoader.loadCsvInfo();
 
         // 분석기 서비스를 생성한다.
         AnalyzerService analyzerService = new AnalyzerService();
