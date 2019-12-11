@@ -1,7 +1,15 @@
 package com.simple.autocomplete.title.service;
 
+import com.simple.autocomplete.title.domain.TitleInfo;
+
+import java.util.List;
 import java.util.Set;
 
 public interface AutoCompleteService {
-    Set<String> getSearchResult(String searchWord);
+    boolean initIndex(List<TitleInfo> list);
+    Set<TitleInfo> getSearchResult(String searchWord);
+    boolean addAutocomplete(TitleInfo titleInfo);
+    boolean updateAutocomplete(TitleInfo titleInfo);
+    boolean deleteAutocomplete(TitleInfo titleInfo);
 }
+
