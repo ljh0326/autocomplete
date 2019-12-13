@@ -1,8 +1,6 @@
 package com.simple.autocomplete.lucene.service;
 
 import com.simple.autocomplete.lucene.analyzer.KORNgramAnalyzer;
-import com.simple.autocomplete.title.domain.TitleInfo;
-import com.simple.autocomplete.utils.CsvLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;

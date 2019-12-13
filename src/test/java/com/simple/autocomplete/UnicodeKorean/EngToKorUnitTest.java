@@ -1,6 +1,5 @@
 package com.simple.autocomplete.UnicodeKorean;
 
-import com.simple.autocomplete.utils.Eng2KorConverter;
 import org.junit.Assert;
 import org.junit.Test;
 
