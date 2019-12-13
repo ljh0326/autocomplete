@@ -4,6 +4,8 @@ import com.opencsv.bean.CsvBindByPosition;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.Objects;
+
 public class TitleInfo {
 
     //컨텐츠 넘버
@@ -79,6 +81,20 @@ public class TitleInfo {
 
     public void setScore(float score) {
         this.score = score;
+    }
+
+    //제목만 같아도 같은 객체로 인실할 수 있도록
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TitleInfo titleInfo = (TitleInfo) o;
+        return Objects.equals(autoKeyword, titleInfo.autoKeyword);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(autoKeyword);
     }
 
     @Override
