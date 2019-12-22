@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -34,6 +36,7 @@ public class AutocompleteController {
      */
     @GetMapping("/getResult")
     @ResponseBody
+    @Cacheable(value = "autocompleteResult", key= "#searchWord", condition = "#searchWord.length() > 1")
     public Set<TitleInfo> autocomplete(@RequestParam(value = "searchWord", required = false)String searchWord){
         return autoCompleteService.getSearchResult(searchWord);
     }
@@ -44,6 +47,7 @@ public class AutocompleteController {
      * @return 성공여부
      */
     @PostMapping("/add")
+    @CacheEvict(value = "autocompleteResult", allEntries = true)
     public ResponseEntity<String> addAutocomplete(@RequestBody TitleInfo titleInfo){
 
         if(StringUtils.isEmpty(titleInfo.getAutoKeyword())){
@@ -63,6 +67,7 @@ public class AutocompleteController {
      * @return 수정 성공여부
      */
     @PostMapping("/update")
+    @CacheEvict(value = "autocompleteResult", allEntries = true)
     public ResponseEntity<String> updateAutocomplete(@RequestBody TitleInfo titleInfo){
         if(StringUtils.isEmpty(titleInfo.getAutoKeyword()) ){
             return new ResponseEntity<>("title is empty", HttpStatus.FORBIDDEN);
@@ -81,6 +86,7 @@ public class AutocompleteController {
      * @return 삭제 성공여부
      */
     @PostMapping("/delete")
+    @CacheEvict(value = "autocompleteResult", allEntries = true)
     public ResponseEntity<String> deleteAutocomplete(@RequestBody TitleInfo titleInfo){
 
         if(StringUtils.isEmpty(titleInfo.getContentsNo())){
@@ -99,6 +105,7 @@ public class AutocompleteController {
      * @return 색인성공여부
      */
     @PostMapping("/index")
+    @CacheEvict(value = "autocompleteResult", allEntries = true)
     public ResponseEntity<String> requestIndex(@RequestBody List<TitleInfo> list){
         if(autoCompleteService.initIndex(list))
             return new ResponseEntity<>( "index success", HttpStatus.OK);
