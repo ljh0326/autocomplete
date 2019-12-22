@@ -200,7 +200,7 @@
             }
 
             httpRequest.onreadystatechange = alertContents;
-            httpRequest.open('GET', '/autocomplete?searchWord=' + document.getElementById("autocomplete").value);
+            httpRequest.open('GET', '/autocomplete/getResult?searchWord=' + document.getElementById("autocomplete").value);
             httpRequest.send();
         }
 

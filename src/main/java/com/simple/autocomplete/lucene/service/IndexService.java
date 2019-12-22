@@ -6,30 +6,36 @@ import com.simple.autocomplete.utils.CsvLoader;
 import com.simple.autocomplete.utils.DateUtil;
 import com.simple.autocomplete.utils.Eng2KorConverter;
 import com.simple.autocomplete.utils.PropertyLoader;
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.document.*;
-import org.apache.lucene.index.*;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.MMapDirectory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.document.DateTools;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.DoubleDocValuesField;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.StoredField;
+import org.apache.lucene.document.StringField;
+import org.apache.lucene.document.TextField;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.MMapDirectory;
 
 /**
  * @author LEE
  * @contact ljh0326s@gmail.com
  */
+@Slf4j
 public class IndexService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(IndexService.class);
-
-    //분석기. IndexServiceFactory에서 주입받는다.
 
     /**
      * 데이터를 색인하는 메서드
@@ -50,7 +56,7 @@ public class IndexService {
             writer.commit();
             return true;
         } catch (IOException e) {
-            LOGGER.error("IndexWriter 생성 오류: IndexService directory OR config OR objectList 살펴볼것 {e}", e);
+            log.error("IndexWriter 생성 오류: IndexService directory OR config OR objectList 살펴볼것 {e}", e);
             return false;
         }
     }
@@ -68,7 +74,7 @@ public class IndexService {
             writer.commit();
             return true;
         } catch (IOException e) {
-            LOGGER.error("IndexWriter 추가 오류: IndexService directory OR config OR parameter 살펴볼것 {e}", e);
+            log.error("IndexWriter 추가 오류: IndexService directory OR config OR parameter 살펴볼것 {e}", e);
             return false;
         }
     }
@@ -85,7 +91,7 @@ public class IndexService {
             writer.commit();
             return true;
         } catch (IOException e) {
-            LOGGER.error("IndexWriter 추가 오류: IndexService directory OR config OR parameter 살펴볼것 {e}", e);
+            log.error("IndexWriter 추가 오류: IndexService directory OR config OR parameter 살펴볼것 {e}", e);
             return false;
         }
     }
@@ -101,7 +107,7 @@ public class IndexService {
             writer.commit();
             return true;
         } catch (IOException e) {
-            LOGGER.error("IndexWriter 수정 오류: IndexService directory OR config OR parameter 살펴볼것 {e}", e);
+            log.error("IndexWriter 수정 오류: IndexService directory OR config OR parameter 살펴볼것 {e}", e);
             return false;
         }
     }
