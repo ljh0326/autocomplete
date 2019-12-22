@@ -1,14 +1,14 @@
 package com.simple.autocomplete.utils;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 
 /**
  *  @author LEE
@@ -17,7 +17,8 @@ import java.util.Properties;
  */
 public class PropertyLoader {
     //설정 파일 경로
-    private static final String PROPERTY_FILE_LOCATION = "src/main/resources/application.properties";
+    private static final Logger LOGGER = LoggerFactory.getLogger(PropertyLoader.class);
+    private static final String PROPERTY_FILE_LOCATION = "application.properties";
     private static final PropertyLoader instance = new PropertyLoader();
 
     //속성을 맵으로 저장
@@ -30,11 +31,15 @@ public class PropertyLoader {
     //속성을 불러오는 메서드
     private void loadProperties() {
         Properties prop = new Properties();
-        Path path = Paths.get(PROPERTY_FILE_LOCATION);
+        ClassPathResource classPathResource = new ClassPathResource(PROPERTY_FILE_LOCATION);
+
+        if(!classPathResource.exists()){
+            LOGGER.error("Invalid filPath : {}", PROPERTY_FILE_LOCATION);
+        }
 
         try {
             // FileInputStream으로 설정 파일에서 데이터를 읽어 온다
-            prop.load(new InputStreamReader(new FileInputStream(path.toFile()), StandardCharsets.UTF_8));
+            prop.load(new InputStreamReader(classPathResource.getInputStream(), StandardCharsets.UTF_8));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -53,4 +58,5 @@ public class PropertyLoader {
     public String getPropertyValue(String key) {
         return propMap.get(key);
     }
+
 }

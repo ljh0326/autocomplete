@@ -3,6 +3,7 @@ package com.simple.autocomplete.lucene.service;
 import com.simple.autocomplete.lucene.analyzer.CustomNgramAnalyzer;
 import com.simple.autocomplete.title.domain.TitleInfo;
 import com.simple.autocomplete.utils.CsvLoader;
+import com.simple.autocomplete.utils.CsvLoader.CsvFilePath;
 import com.simple.autocomplete.utils.DateUtil;
 import com.simple.autocomplete.utils.Eng2KorConverter;
 import com.simple.autocomplete.utils.PropertyLoader;
@@ -42,7 +43,7 @@ public class IndexService {
      */
     public boolean index() {
         //색인할 데이터
-        List<TitleInfo> objectList = CsvLoader.loadCsvInfo();
+        List<TitleInfo> objectList = CsvLoader.loadCsvInfo(CsvFilePath.TITLE_FILE_PATH, TitleInfo.class);
         //objectList에 담긴 데이터들을 색인한다.
         return index(objectList);
     }

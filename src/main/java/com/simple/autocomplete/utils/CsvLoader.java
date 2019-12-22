@@ -2,14 +2,14 @@ package com.simple.autocomplete.utils;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import com.simple.autocomplete.title.domain.TitleInfo;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
+import org.springframework.core.io.ClassPathResource;
 
 /**
  *  @author LEE
@@ -18,47 +18,41 @@ import java.util.List;
  */
 public class CsvLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(CsvLoader.class);
-    private static String csvFilePath;
-    private static Class clazz;
     private static final CsvLoader instance = new CsvLoader();
 
     /**
-     *  생성자 파일경로를 초기화 한다.
-     *  파일 경로는 application.properties에서 설정할 수 있다.
+     * 여러 CSV 경로를 가르키는 enum
      */
-    static{
-        try {
-            csvFilePath = PropertyLoader.getInstance().getPropertyValue("WALK_WAY_FILE_PATH");
-            clazz = Class.forName(PropertyLoader.getInstance().getPropertyValue("WALK_WAY_OBJECT"));
-        } catch (ClassNotFoundException e) {
-            LOGGER.error("CsvLoader init error: {}", e);
+    public enum CsvFilePath{
+        /** 타이틀 csv 경로 */ TITLE_FILE_PATH("TITLE_FILE_PATH");
+
+        private String path;
+
+        CsvFilePath(String path){
+            this.path = path;
+        }
+
+        public String getPath() {
+            return path;
         }
     }
 
     private CsvLoader(){ }
-
     public static CsvLoader getInstance() {
         return instance;
-    }
-
-    public static void setCsvFilePath(String csvFilePath) {
-        CsvLoader.csvFilePath = csvFilePath;
-    }
-
-    public static void setClazz(Class clazz) {
-        CsvLoader.clazz = clazz;
     }
 
     /**
      * csv파일을 주어진 Class리스트로 변환한다.
      * @return 주어진 been Class리스트
      */
-    public static <T> List<T> loadCsvInfo(){
+    public static <T> List<T> loadCsvInfo(CsvFilePath csvFilePath, Class clazz){
         List<T> objectList = null;
+        ClassPathResource classPathResource = new ClassPathResource(PropertyLoader.getInstance().getPropertyValue(csvFilePath.getPath()));
         //파일에서 스트림 형태로 CSV정보를 한줄씩 읽는다.
-        try(Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))){
+        try(Reader reader = new BufferedReader(new InputStreamReader(classPathResource.getInputStream(), StandardCharsets.UTF_8))){
             CsvToBean<T> csvToBean = new CsvToBeanBuilder(reader)
-                    .withType(clazz.newInstance().getClass())
+                    .withType(clazz.getDeclaredConstructor().newInstance().getClass())
                     .withSkipLines(1)
                     .withIgnoreLeadingWhiteSpace(true)
                     .build();
@@ -71,8 +65,4 @@ public class CsvLoader {
         return objectList;
     }
 
-    public static void main(String[] args) {
-        List<TitleInfo> titleInfoList = CsvLoader.loadCsvInfo();
-        titleInfoList.forEach(System.out::println);
-    }
 }
