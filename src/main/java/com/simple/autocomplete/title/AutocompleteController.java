@@ -2,18 +2,22 @@ package com.simple.autocomplete.title;
 
 import com.simple.autocomplete.title.domain.TitleInfo;
 import com.simple.autocomplete.title.service.AutoCompleteService;
+import java.util.List;
+import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Set;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/autocomplete")
 public class AutocompleteController {
 
     private final AutoCompleteService autoCompleteService;
@@ -28,7 +32,7 @@ public class AutocompleteController {
      * @param searchWord 검색어
      * @return 검색된 titleInfo
      */
-    @GetMapping("/autocomplete")
+    @GetMapping("/getResult")
     @ResponseBody
     public Set<TitleInfo> autocomplete(@RequestParam(value = "searchWord", required = false)String searchWord){
         return autoCompleteService.getSearchResult(searchWord);
@@ -39,7 +43,7 @@ public class AutocompleteController {
      * @param titleInfo 추가할 색인 정보
      * @return 성공여부
      */
-    @PostMapping("/autocomplete/add")
+    @PostMapping("/add")
     public ResponseEntity<String> addAutocomplete(@RequestBody TitleInfo titleInfo){
 
         if(StringUtils.isEmpty(titleInfo.getAutoKeyword())){
@@ -58,7 +62,7 @@ public class AutocompleteController {
      * @param titleInfo 수정할 색인 정보
      * @return 수정 성공여부
      */
-    @PostMapping("/autocomplete/update")
+    @PostMapping("/update")
     public ResponseEntity<String> updateAutocomplete(@RequestBody TitleInfo titleInfo){
         if(StringUtils.isEmpty(titleInfo.getAutoKeyword()) ){
             return new ResponseEntity<>("title is empty", HttpStatus.FORBIDDEN);
@@ -76,7 +80,7 @@ public class AutocompleteController {
      * @param titleInfo 삭제할 색인 정보
      * @return 삭제 성공여부
      */
-    @PostMapping("/autocomplete/delete")
+    @PostMapping("/delete")
     public ResponseEntity<String> deleteAutocomplete(@RequestBody TitleInfo titleInfo){
 
         if(StringUtils.isEmpty(titleInfo.getContentsNo())){
@@ -94,7 +98,7 @@ public class AutocompleteController {
      * @param list 색인할 데이터
      * @return 색인성공여부
      */
-    @PostMapping("/autocomplete/index")
+    @PostMapping("/index")
     public ResponseEntity<String> requestIndex(@RequestBody List<TitleInfo> list){
         if(autoCompleteService.initIndex(list))
             return new ResponseEntity<>( "index success", HttpStatus.OK);
