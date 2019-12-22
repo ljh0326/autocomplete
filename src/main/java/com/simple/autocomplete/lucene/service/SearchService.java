@@ -4,6 +4,10 @@ import com.simple.autocomplete.lucene.analyzer.CustomNgramAnalyzer;
 import com.simple.autocomplete.title.domain.TitleInfo;
 import com.simple.autocomplete.utils.Eng2KorConverter;
 import com.simple.autocomplete.utils.PropertyLoader;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
@@ -11,15 +15,17 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.queries.function.FunctionScoreQuery;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.*;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.DoubleValuesSource;
+import org.apache.lucene.search.FuzzyQuery;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.MMapDirectory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
  * @author LEE
@@ -28,7 +34,7 @@ import java.util.Set;
 public class SearchService {
     //색인 정보가 저장된 경로
     private final Logger LOGGER = LoggerFactory.getLogger(SearchService.class);
-
+    private static final int DEFAULT_SEARCH_COUNT = 10;
     /**
      * 검색 결과를 반환하는 메서드
      * @param searchValue 검색어
@@ -36,7 +42,7 @@ public class SearchService {
      * @throws IOException
      */
     public Set<TitleInfo> search(String searchValue) throws IOException {
-        return search(searchValue, 10, false);
+        return search(searchValue, DEFAULT_SEARCH_COUNT, false);
     }
 
     public Set<TitleInfo> search(String searchValue, int searchCount) throws IOException {
@@ -52,11 +58,13 @@ public class SearchService {
         String indexPath = PropertyLoader.getInstance().getPropertyValue("INDEX_DIR_PATH");
 
         //빈 글자라면 검색하지말고 결과 반환
-        if(searchValue.isEmpty()) return result;
+        if(searchValue.isEmpty()) {
+            return result;
+        }
 
         //들어온 검색어를 한글로 변환
         searchValue = eng2Kor.engToKor(searchValue.toLowerCase());
-        LOGGER.info("한글 변환 검색어: {} \n", searchValue);
+        LOGGER.info("한글 변환 검색어: {}", searchValue);
 
         //검색 시작
         //IndexSearcher = IndexReader + query
@@ -74,8 +82,8 @@ public class SearchService {
             //검색 결과를 돌면서 결과반환
             for (ScoreDoc hit : hits) {
                 int docId = hit.doc;
-                Document d = searcher.doc(docId);
-                result.add(new TitleInfo(d.get("contentsNo"), d.get("autoKeyword"), d.get("regDate"), d.get("hit"), hit.score));
+                Document document = searcher.doc(docId);
+                result.add(new TitleInfo(document.get("contentsNo"), document.get("autoKeyword"), document.get("regDate"), document.get("hit"), hit.score));
 
                 //스코어 출력
                 if(showScoreLog) showScoreLog(searcher, query,docId);
@@ -83,7 +91,7 @@ public class SearchService {
 
             return result;
         }catch(Exception e){
-            e.printStackTrace();
+            LOGGER.error("색인 조회 실패 | 색인 경로 {} ", indexPath);
             return new LinkedHashSet<>();
         }
     }
