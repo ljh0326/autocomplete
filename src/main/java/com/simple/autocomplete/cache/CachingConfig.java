@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @author AIS 정훈
- * @contact jhlee@saltlux.com
+ * @contact ljh0326s@gmail.com
  * CacheConfig
  * EHCACHE3는 다른 설정을 따로 써줄 필요가 없다.
  */

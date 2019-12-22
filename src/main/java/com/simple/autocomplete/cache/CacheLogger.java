@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author AIS 정훈
- * @contact jhlee@saltlux.com
+ * @contact ljh0326s@gmail.com
  * CacheEvent를 감지해서 LOGGER를 출력하는 클래스
  */
 public class CacheLogger implements CacheEventListener<Object, Object> {
