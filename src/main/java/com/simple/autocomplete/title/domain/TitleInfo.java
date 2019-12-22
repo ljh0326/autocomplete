@@ -1,12 +1,14 @@
 package com.simple.autocomplete.title.domain;
 
 import com.opencsv.bean.CsvBindByPosition;
+import java.io.Serializable;
+import java.util.Objects;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.Objects;
+public class TitleInfo implements Serializable {
 
-public class TitleInfo {
+    private static final long serialVersionUID = -7774473779921666084L;
 
     //컨텐츠 넘버
     @CsvBindByPosition(position = 0)
