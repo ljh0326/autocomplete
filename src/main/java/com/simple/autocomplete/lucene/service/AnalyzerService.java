@@ -1,15 +1,14 @@
 package com.simple.autocomplete.lucene.service;
 
-import com.simple.autocomplete.lucene.analyzer.KORNgramAnalyzer;
+import com.simple.autocomplete.title.domain.TitleInfo;
+import java.io.IOException;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.List;
 
 /**
  * @author LEE
@@ -47,18 +46,5 @@ public class AnalyzerService {
                     }
                 });
         LOGGER.info("토큰화 결과 {}", stringBuffer.toString());
-    }
-
-    public static void main(String[] args) {
-
-        // CSV 파일에서 데이터를 읽는다.
-        List<TitleInfo> titleInfoList = CsvLoader.loadCsvInfo();
-
-        // 분석기 서비스를 생성한다.
-        AnalyzerService analyzerService = new AnalyzerService();
-
-        // StandardAnalyzer를 테스트한다.
-        analyzerService.analyzeText(titleInfoList, KORNgramAnalyzer.getAnalyzer());
-
     }
 }
