@@ -18,4 +18,4 @@ script: "./mvnw clean install"
 notifications:
   email:
     recipients:
-      -ljh0326s@gmail.com
+      - ljh0326s@gmail.com
