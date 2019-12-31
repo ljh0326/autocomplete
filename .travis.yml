@@ -34,6 +34,20 @@ deploy:
     wait-until-deployed: true
     on:
       branch: merge_branch
+
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
+    secret_access_key: $AWS_SECRET_KEY # Travis repo settings에 설정된 값
+    bucket: autocomplete-ec2-webservice
+    key: autocomplete.zip # 빌드 파일을 압축해서 전달
+
+    bundle_type: zip # 압축 확장자
+    application: autocomplete-webservice # 웹 콘솔에서 등록 한 CodeDeploy 애플리케이션
+    deployment_grop: autocomplete-webservice-group
+    region: ap-northeast-2
+    wait-until-deployed: true
+      on:
+        branch: merge_branch
 #CI 실행 완료 시 메일로 알람
 notifications:
   email:
