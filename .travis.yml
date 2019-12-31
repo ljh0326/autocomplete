@@ -43,7 +43,7 @@ deploy:
 
     bundle_type: zip # 압축 확장자
     application: autocomplete-webservice # 웹 콘솔에서 등록 한 CodeDeploy 애플리케이션
-    deployment_grop: autocomplete-webservice-group
+    deployment_group: autocomplete-webservice-group
     region: ap-northeast-2
     wait-until-deployed: true
       on:
