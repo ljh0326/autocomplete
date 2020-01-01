@@ -21,6 +21,9 @@ else
   sleep 5
 fi
 
+echo "> 색인 폴더 생성"
+mkdir ./index
+
 echo "> 새 애플리케이션 배포"
 
 JAR_NAME=$(ls -tr $REPOSITORY/*.jar | tail -n 1)
