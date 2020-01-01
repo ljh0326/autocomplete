@@ -22,7 +22,7 @@ else
 fi
 
 echo "> 색인 폴더 생성"
-mkdir ./index
+sudo mkdir ./index
 
 echo "> 새 애플리케이션 배포"
 
