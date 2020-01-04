@@ -19,6 +19,8 @@ script: "./mvnw clean install"
 
 before_deploy:
   - mkdir -p before-deploy
+  - mkdir ./index
+  - mv -r ./index before-deploy/
   - cp script/*.sh before-deploy/
   - cp appspec.yml before-deploy/
   - cp target/*.jar before-deploy/
